@@ -4,7 +4,7 @@
         { id: 1, title: 'Your name', type: 'text', mandatory: true, has_options: false },
         { id: 2, title: 'Your email', type: 'email', mandatory: true, has_options: false },
         { id: 3, title: 'Your contact number', type: 'number', mandatory: true, has_options: false },
-        // { id: 4, title: 'How likely is that you recommend this survey to a friend or a colleague?', type: 'rating', mandatory: true, has_options: false },
+        { id: 4, title: 'How likely is that you recommend this survey to a friend or a colleague?', type: 'rating', mandatory: true, has_options: false },
         { id: 5, title: 'Overall how satisfied or dissatisfied are you with this survey?', type: 'radio', mandatory: true, has_options: true, options: [
             { value: 'satisfied', label: 'Satisfied' },
             { value: 'somewhat_safisfied', label: 'Somewhat satisfied' },

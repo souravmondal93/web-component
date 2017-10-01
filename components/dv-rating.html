@@ -1,0 +1,82 @@
+<template>
+    <style>
+
+        .dv-rating {
+            border: 1px solid gray;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        .rating-element {
+            display: inline-block;
+            padding: 30px;
+            border-right: 1px solid gray;
+            font-weight: 800;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .rating-element-active {
+            color: #fff;
+            background-color: #2F4858;
+        }
+
+        .dv-rating span:last-child {
+            border-right: 0;
+        }
+    </style>
+    <div class="dv-rating"></div>
+</template>
+
+<script>
+    (function(window, document, undefined) {
+
+        const thatDoc = document;
+
+        const thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+
+        // Gets content from <template>.
+        const template = thisDoc.querySelector( 'template' ).content;
+
+        let dvRating;
+
+        class DvRating extends HTMLElement {
+
+            constructor() {
+                super();
+
+                const shadowRoot = this.attachShadow({mode:'open'});
+
+                // Adds a template clone into shadow root.
+                const clone = thatDoc.importNode( template, true );
+                shadowRoot.appendChild(clone);
+
+                dvRating = this.shadowRoot.querySelector('.dv-rating');
+            }
+
+            connectedCallback() {
+                this.setupRating();
+            }
+
+            setupRating() {
+                for (let i = 0; i < 11; i++) {
+                    const span = document.createElement('span');
+                    span.addEventListener('click', this.ratingElementClickEvent);
+                    span.innerHTML = i;
+                    span.className += 'rating-element';
+                    dvRating.appendChild(span);
+                }
+            }
+
+            ratingElementClickEvent() {
+                const oldActiveElement = dvRating.getElementsByClassName('rating-element-active');
+                if (oldActiveElement.length) {
+                    oldActiveElement[0].classList.remove('rating-element-active');
+                }
+                this.classList.add('rating-element-active');
+            }
+
+        }
+        window.customElements.define('dv-rating', DvRating);
+    })(window, document);
+</script>

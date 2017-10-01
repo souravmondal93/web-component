@@ -100,6 +100,9 @@
                     case 'number':
                         answerTemplate = thisDoc.querySelector( 'template.number' ).content;
                         break;
+                    case 'rating':
+                        this.addRating();
+                        break;
                     case 'radio':
                         answerTemplate = thisDoc.querySelector( 'template.radio' ).content;
                         break;
@@ -111,8 +114,9 @@
                         break;
                 }
 
-
-                this.shadowRoot.querySelector('.dv-answer').appendChild(answerTemplate);
+                if (question['type'] !== 'rating') {
+                    this.shadowRoot.querySelector('.dv-answer').appendChild(answerTemplate);
+                }
 
                 if (question['type'] === 'radio' || question['type'] === 'checkbox') {
                     this.addOptions(question['options'], question['type']);
@@ -121,7 +125,6 @@
 
             addOptions(options, type) {
                 const column = this.shadowRoot.querySelector('.s12');
-                console.log(column);
                 const className = type === 'radio' ? 'with-gap' : 'filled-in';
                 const inputType = type === 'radio' ? 'radio' : 'checkbox';
                 options.forEach((option, idx) => {
@@ -134,11 +137,10 @@
                 });
             }
 
-            removeDefaultTemplate() {
-                const column = this.shadowRoot.querySelector('.s12');
-                const numberInput = this.shadowRoot.querySelector('input[type=number]');
-                console.log(column, numberInput);
-//                column.removeChild(numberInput);
+            addRating() {
+                const ratingComponent = document.createElement('dv-rating');
+                this.shadowRoot.querySelector('.dv-answer').appendChild(ratingComponent);
+
             }
 
         }
