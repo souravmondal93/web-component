@@ -52,6 +52,15 @@
                 shadowRoot.appendChild(clone);
 
                 dvRating = this.shadowRoot.querySelector('.dv-rating');
+                this.rated(false);
+            }
+
+            rated(value) {
+                if (value) {
+                    this.setAttribute('rated', '');
+                } else {
+                    this.removeAttribute('rated');
+                }
             }
 
             connectedCallback() {
@@ -61,19 +70,20 @@
             setupRating() {
                 for (let i = 0; i < 11; i++) {
                     const span = document.createElement('span');
-                    span.addEventListener('click', this.ratingElementClickEvent);
+                    span.addEventListener('click', this.ratingElementClickEvent.bind(this));
                     span.innerHTML = i;
                     span.className += 'rating-element';
                     dvRating.appendChild(span);
                 }
             }
 
-            ratingElementClickEvent() {
+            ratingElementClickEvent(event) {
                 const oldActiveElement = dvRating.getElementsByClassName('rating-element-active');
                 if (oldActiveElement.length) {
                     oldActiveElement[0].classList.remove('rating-element-active');
                 }
-                this.classList.add('rating-element-active');
+                event.target.classList.add('rating-element-active');
+                this.rated(true);
             }
 
         }
