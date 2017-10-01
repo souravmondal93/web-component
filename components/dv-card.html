@@ -53,14 +53,15 @@
 
             constructor() {
                 super();
-            }
 
-            connectedCallback() {
                 const shadowRoot = this.attachShadow({mode:'open'});
 
                 // Adds a template clone into shadow root.
                 const clone = thatDoc.importNode( template, true );
                 shadowRoot.appendChild(clone);
+            }
+
+            connectedCallback() {
             }
 
             attributeChangedCallback(attrName, oldVal, newVal) {
@@ -72,16 +73,24 @@
             setOptions(question) {
                 this.setQuestionNumber(question);
                 this.setQuestion(question);
+                this.setAnswer(question);
             }
 
             setQuestionNumber(question) {
-                const questionNumber = document.querySelector('dv-card').shadowRoot.querySelector('.dv-card-title');
+                const questionNumber = this.shadowRoot.querySelector('.dv-card-title');
                 questionNumber.innerHTML = 'Question ' + question['id'];
             }
 
             setQuestion(question) {
-                const questionNumber = document.querySelector('dv-card').shadowRoot.querySelector('p');
+                const questionNumber = this.shadowRoot.querySelector('p');
                 questionNumber.innerHTML = question['title'];
+            }
+
+            setAnswer(question) {
+                const answerNode = document.createElement('dv-answer');
+                answerNode.setAttribute('question', JSON.stringify(question));
+                const questionNumber = this.shadowRoot.querySelector('.dv-card-content');
+                questionNumber.appendChild(answerNode);
             }
 
         }
