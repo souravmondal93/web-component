@@ -1,0 +1,147 @@
+<template>
+    <div class="dv-answer"></div>
+</template>
+
+<template class="text">
+    <link rel="stylesheet" href="../../materialize/dist/css/materialize.min.css">
+    <div class="row">
+        <div class="input-field col s12">
+            <input type="text" placeholder="Answer">
+        </div>
+    </div>
+</template>
+
+<template class="email">
+    <link rel="stylesheet" href="../../materialize/dist/css/materialize.min.css">
+    <div class="row">
+        <div class="input-field col s12">
+            <input type="email" placeholder="Answer">
+        </div>
+    </div>
+</template>
+
+<template class="number">
+    <link rel="stylesheet" href="../../materialize/dist/css/materialize.min.css">
+    <div class="row">
+        <div class="input-field col s12">
+            <input type="number" placeholder="Answer">
+        </div>
+    </div>
+</template>
+
+<template class="radio">
+    <div class="row">
+        <div class="col s12">
+
+        </div>
+    </div>
+</template>
+
+<template class="checkbox">
+    <div class="row">
+        <div class="col s12">
+
+        </div>
+    </div>
+</template>
+
+<template class="textarea">
+    <link rel="stylesheet" href="../../materialize/dist/css/materialize.min.css">
+    <div class="row">
+        <div class="input-field col s12">
+            <textarea class="materialize-textarea" placeholder="Answer"></textarea>
+        </div>
+    </div>
+</template>
+
+<script>
+    (function(window, document, undefined) {
+
+        const thatDoc = document;
+
+        const thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+
+        // Gets content from <template>.
+        let template = thisDoc.querySelector( 'template' ).content;
+
+        class DvAnswer extends HTMLElement {
+
+            static get observedAttributes() {return ['question']; };
+
+            constructor() {
+                super();
+
+                const shadowRoot = this.attachShadow({mode:'open'});
+
+                // Adds a template clone into shadow root.
+                const clone = thatDoc.importNode( template, true );
+                shadowRoot.appendChild(clone);
+            }
+
+            connectedCallback() {
+            }
+
+            attributeChangedCallback(attrName, oldVal, newVal) {
+                if (attrName === 'question') {
+                    const questionObject = JSON.parse(newVal);
+                    this.selectTemplate(questionObject);
+                }
+            }
+
+            selectTemplate(question) {
+                let answerTemplate;
+                switch (question['type']) {
+                    case 'text':
+                        answerTemplate = thisDoc.querySelector( 'template.text' ).content;
+                        break;
+                    case 'email':
+                        answerTemplate = thisDoc.querySelector( 'template.email' ).content;
+                        break;
+                    case 'number':
+                        answerTemplate = thisDoc.querySelector( 'template.number' ).content;
+                        break;
+                    case 'radio':
+                        answerTemplate = thisDoc.querySelector( 'template.radio' ).content;
+                        break;
+                    case 'checkbox':
+                        answerTemplate = thisDoc.querySelector( 'template.checkbox' ).content;
+                        break;
+                    case 'textarea':
+                        answerTemplate = thisDoc.querySelector( 'template.textarea' ).content;
+                        break;
+                }
+
+
+                this.shadowRoot.querySelector('.dv-answer').appendChild(answerTemplate);
+
+                if (question['type'] === 'radio' || question['type'] === 'checkbox') {
+                    this.addOptions(question['options'], question['type']);
+                }
+            }
+
+            addOptions(options, type) {
+                const column = this.shadowRoot.querySelector('.s12');
+                console.log(column);
+                const className = type === 'radio' ? 'with-gap' : 'filled-in';
+                const inputType = type === 'radio' ? 'radio' : 'checkbox';
+                options.forEach((option, idx) => {
+                    const optionP = document.createElement('p');
+                    optionP.innerHTML = `
+                        <input class="${className}" name="radioAnswer" type="${inputType}" id="option${idx}" value="${option['value']}"  />
+                        <label for="option${idx}">${option['label']}</label>
+                    `;
+                    column.append(optionP);
+                });
+            }
+
+            removeDefaultTemplate() {
+                const column = this.shadowRoot.querySelector('.s12');
+                const numberInput = this.shadowRoot.querySelector('input[type=number]');
+                console.log(column, numberInput);
+//                column.removeChild(numberInput);
+            }
+
+        }
+        window.customElements.define('dv-answer', DvAnswer);
+    })(window, document);
+</script>
