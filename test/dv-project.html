@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>dv-project</title>
+
+    <!-- Setup WCT -->
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^1.0.0/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <!-- Import dv-project  -->
+    <link rel="import" href="../dv-project.html">
+
+  </head>
+  <body>
+
+    <test-fixture id="default">
+      <template>
+        <dv-project></dv-project>
+      </template>
+    </test-fixture>
+
+    <script>
+      describe('<dv-project>', () => {
+        var component;
+
+        beforeEach(() => component = fixture('default'));
+
+        it('is okay', function() {
+          expect(component).to.be.ok;
+        });
+      });
+    </script>
+  </body>
+</html>

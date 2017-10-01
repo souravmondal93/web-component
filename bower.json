@@ -1,0 +1,28 @@
+{
+  "name": "dv-project",
+  "version": "0.0.0",
+  "authors": [
+    "Sourav Mondal"
+  ],
+  "description": "Assignment Project",
+  "keywords": [
+    "web-components",
+    "custom-element",
+    "dv-project"
+  ],
+  "main": "dv-project.html",
+  "license": "MIT",
+  "homepage": "https://github.com//dv-project/",
+  "demos": {
+    "Demo": "demo/index.html"
+  },
+  "ignore": [
+    "*",
+    "!*.html",
+    "!LICENSE"
+  ],
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "^6.0.0"
+  }
+}

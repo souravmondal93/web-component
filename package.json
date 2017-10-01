@@ -1,0 +1,30 @@
+{
+  "name": "dv-project",
+  "version": "0.0.0",
+  "description": "Assignment Project",
+  "main": "dv-project.html",
+  "scripts": {
+    "test": "wct",
+    "posttest": "eslint .",
+    "demo": "browser-sync start -c bs-config.js"
+  },
+  "author": "Sourav Mondal",
+  "license": "MIT",
+  "keywords": [
+    "web-components",
+    "custom-element",
+    "dv-project"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com//dv-project.git"
+  },
+  "bugs": {
+    "url": "https://github.com//dv-project/issues"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.9.0",
+    "eslint": "^3.14.1",
+    "web-component-tester": "^6.0.0"
+  }
+}

@@ -1,0 +1,90 @@
+<template>
+    <style>
+        .dv-card {
+            position: relative;
+            margin: .5rem 0 1rem 0;
+            background-color: #fff;
+            transition: box-shadow .25s;
+            border-radius: 2px;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        .dv-card-content {
+            padding: 24px;
+            border-radius: 0 0 2px 2px;
+        }
+
+        .dv-card-title {
+            display: block;
+            line-height: 32px;
+            margin-bottom: 8px;
+            font-size: 24px;
+            font-weight: 300;
+        }
+    </style>
+
+    <div class="dv-card">
+        <div class="dv-card-content">
+
+            <div class="dv-card-title">
+
+            </div>
+
+            <p>
+                Some Content
+            </p>
+        </div>
+    </div>
+</template>
+
+<script>
+    (function(window, document, undefined) {
+
+        const thatDoc = document;
+
+        const thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+
+        // Gets content from <template>.
+        const template = thisDoc.querySelector( 'template' ).content;
+
+        class DvCard extends HTMLElement {
+
+            static get observedAttributes() {return ['question']; };
+
+            constructor() {
+                super();
+            }
+
+            connectedCallback() {
+                const shadowRoot = this.attachShadow({mode:'open'});
+
+                // Adds a template clone into shadow root.
+                const clone = thatDoc.importNode( template, true );
+                shadowRoot.appendChild(clone);
+            }
+
+            attributeChangedCallback(attrName, oldVal, newVal) {
+                if (attrName === 'question') {
+                    this.setOptions(JSON.parse(newVal));
+                }
+            }
+
+            setOptions(question) {
+                this.setQuestionNumber(question);
+                this.setQuestion(question);
+            }
+
+            setQuestionNumber(question) {
+                const questionNumber = document.querySelector('dv-card').shadowRoot.querySelector('.dv-card-title');
+                questionNumber.innerHTML = 'Question ' + question['id'];
+            }
+
+            setQuestion(question) {
+                const questionNumber = document.querySelector('dv-card').shadowRoot.querySelector('p');
+                questionNumber.innerHTML = question['title'];
+            }
+
+        }
+        window.customElements.define('dv-card', DvCard);
+    })(window, document);
+</script>
