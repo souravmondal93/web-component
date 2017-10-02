@@ -24,7 +24,7 @@ node server.js
 npm run demo
 ```
 
-###NOTE
+#### NOTE
 I have copied the server.js file from the original assignment and made few changes to support CORS
 functionality in the server.
 
