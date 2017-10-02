@@ -44,7 +44,7 @@
 
     function addSubmitBtn() {
         const submitBtn = document.createElement('button');
-        submitBtn.className ='btn-large submit-btn';
+        submitBtn.className ='btn-large submit-btn red';
         submitBtn.innerHTML = ('Submit').toUpperCase();
         submitBtn.addEventListener('click', submitBtnEventHandler.bind(this));
         mainWrapper[0].appendChild(submitBtn);
@@ -53,15 +53,36 @@
     function submitBtnEventHandler() {
         const allDvCards = document.querySelectorAll('dv-card');
         let isAllAnswersValid = true;
-        allDvCards.forEach((dvCard) => {
+        allDvCards.forEach((dvCard, idx) => {
             const isAnswerValid = dvCard.shadowRoot.querySelector('dv-answer').isAnswerValid;
             if (!isAnswerValid) {
                 isAllAnswersValid = false;
+                addInvalidStatus(idx);
+            } else {
+                removeInvalidStatus(idx);
             }
         });
 
         if (isAllAnswersValid) {
             showSuccessBox();
+        }
+    }
+
+    function addInvalidStatus(idx) {
+        const selectedDvCard = document.querySelectorAll('dv-card')[idx];
+        const cardTitle = selectedDvCard.shadowRoot.querySelector('.dv-card-title');
+        if (!cardTitle.classList.contains('red-text')) {
+            cardTitle.innerHTML += '<small class="required-text">This is a required field.</small>';
+            cardTitle.classList.add('red-text');
+        }
+    }
+
+    function removeInvalidStatus(idx) {
+        const selectedDvCard = document.querySelectorAll('dv-card')[idx];
+        const cardTitle = selectedDvCard.shadowRoot.querySelector('.dv-card-title');
+        if (cardTitle.classList.contains('red-text')) {
+            cardTitle.removeChild(cardTitle.childNodes[1]);
+            cardTitle.classList.remove('red-text');
         }
     }
 
