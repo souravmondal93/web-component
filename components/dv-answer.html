@@ -130,7 +130,7 @@
                 options.forEach((option, idx) => {
                     const optionP = document.createElement('p');
                     optionP.innerHTML = `
-                        <input class="${className}" name="radioAnswer" type="${inputType}" id="option${idx}" value="${option['value']}"  />
+                        <input class="${className}" name="${inputType}Answer" type="${inputType}" id="option${idx}" value="${option['value']}"  />
                         <label for="option${idx}">${option['label']}</label>
                     `;
                     column.append(optionP);
@@ -143,6 +143,72 @@
 
             }
 
+            get isAnswerValid() {
+                let isValid;
+                const inputField = this.shadowRoot.querySelector('input');
+                const textArea = this.shadowRoot.querySelector('textarea');
+
+                if (inputField) {
+                    isValid = this.isInputValid();
+                }  else if (textArea) {
+                    isValid = Boolean(textArea.value.trim());
+                } else {
+                    isValid = this.isRated()
+                }
+
+                return isValid;
+            }
+
+            isInputValid() {
+                let isValid;
+                const input = this.shadowRoot.querySelector('input');
+
+                if (input) {
+                    const inputType = input.getAttribute('type');
+                    switch (inputType) {
+                        case 'text':
+                            isValid = (Boolean(input.value.trim()));
+                            break;
+                        case 'email':
+                            isValid = this.validateEmail(input.value);
+                            break;
+                        case 'number':
+                            isValid = this.validateNumber(input.value);
+                            break;
+                        case 'radio':
+                            isValid = this.validateRadioButton();
+                            break;
+                        case 'checkbox':
+                            isValid = this.validateCheckbox();
+                            break;
+                    }
+                }
+
+                return isValid;
+            }
+
+            validateEmail(email) {
+                const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return emailRegex.test(email);
+            }
+
+            validateNumber(number) {
+                const numberRegex = /^\d{10}$/;
+                return numberRegex.test(number);
+            }
+
+            validateRadioButton() {
+                return Boolean(this.shadowRoot.querySelector('input[name=radioAnswer]:checked'));
+            }
+
+            validateCheckbox() {
+                return Boolean(this.shadowRoot.querySelector('input[name=checkboxAnswer]:checked'));
+            }
+
+            isRated() {
+                const dvRating = this.shadowRoot.querySelector('dv-rating');
+                return dvRating.hasAttribute('rated');
+            }
         }
         window.customElements.define('dv-answer', DvAnswer);
     })(window, document);

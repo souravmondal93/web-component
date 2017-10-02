@@ -52,10 +52,10 @@
                 shadowRoot.appendChild(clone);
 
                 dvRating = this.shadowRoot.querySelector('.dv-rating');
-                this.rated(false);
+                this.rated = false;
             }
 
-            rated(value) {
+            set rated(value) {
                 if (value) {
                     this.setAttribute('rated', '');
                 } else {
@@ -83,7 +83,7 @@
                     oldActiveElement[0].classList.remove('rating-element-active');
                 }
                 event.target.classList.add('rating-element-active');
-                this.rated(true);
+                this.rated = true;
             }
 
         }

@@ -23,18 +23,38 @@
         { id: 7, title: 'Do you have any comments or concerns?', type: 'textarea', mandatory: false, has_options: false },
     ];
 
+    const mainWrapper = document.getElementsByClassName('main-content');
     const link = document.createElement('link');
     link.setAttribute('rel', 'import');
     link.setAttribute('href', '../components/dv-card.html');
     link.onload = function () {
         // do stuff with import content
-        const mainWrapper = document.getElementsByClassName('main-content');
+        addQuestions(questions);
+        addSubmitBtn();
+    };
+    document.body.appendChild(link);
+
+    function addQuestions(questions) {
         questions.forEach((question) => {
             const dvCardComponent = document.createElement('dv-card');
             dvCardComponent.setAttribute('question', JSON.stringify(question));
             mainWrapper[0].append(dvCardComponent);
         });
-    };
-    document.body.appendChild(link);
+    }
+
+    function addSubmitBtn() {
+        const submitBtn = document.createElement('button');
+        submitBtn.className ='btn-large submit-btn';
+        submitBtn.innerHTML = ('Submit').toUpperCase();
+        submitBtn.addEventListener('click', submitBtnEventHandler.bind(this));
+        mainWrapper[0].appendChild(submitBtn);
+    }
+
+    function submitBtnEventHandler() {
+        const allDvCards = document.querySelectorAll('dv-card');
+        allDvCards.forEach((dvCard) => {
+            console.log(dvCard.shadowRoot.querySelector('dv-answer').isAnswerValid);
+        });
+    }
 
 })(window, document);
