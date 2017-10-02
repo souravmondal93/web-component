@@ -52,9 +52,34 @@
 
     function submitBtnEventHandler() {
         const allDvCards = document.querySelectorAll('dv-card');
+        let isAllAnswersValid = true;
         allDvCards.forEach((dvCard) => {
-            console.log(dvCard.shadowRoot.querySelector('dv-answer').isAnswerValid);
+            const isAnswerValid = dvCard.shadowRoot.querySelector('dv-answer').isAnswerValid;
+            if (!isAnswerValid) {
+                isAllAnswersValid = false;
+            }
         });
+
+        if (isAllAnswersValid) {
+            showSuccessBox();
+        }
+    }
+
+    function showSuccessBox() {
+        mainWrapper[0].innerHTML = '';
+        const successBoxHTML = `
+            <div class="success-box center-align">
+                <div class="card small">
+                    <div class="card-content">
+                        <h2 class="congrats-text">Congrats!</h2>
+                        <h4 class="flow-text">
+                            Your responses has been recorded. Thank you for your time.
+                        </h4>
+                    </div>
+                </div>
+            </div>  
+        `;
+        mainWrapper[0].innerHTML = successBoxHTML;
     }
 
 })(window, document);
